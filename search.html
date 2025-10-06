@@ -1,21 +1,21 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>도서 검색 | 마나바</title>
 <style>
   :root { --bd:#e6e6e6; --fg:#222; --sub:#666; --bg:#fff; }
-  body{ margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans KR',Arial; background:var(--bg); color:var(--fg); }
+  body{ margin:0; font-family:system-ui,-apple-system,'Noto Sans KR',Segoe UI,Roboto,Arial; background:#fff; color:#222; }
   .wrap{ max-width:860px; margin:16px auto; padding:16px; }
   .title{ font-size:20px; font-weight:700; margin:6px 2px 12px; }
-  .desc{ font-size:13px; color:var(--sub); margin:0 2px 14px; line-height:1.4; }
+  .desc{ font-size:13px; color:#666; margin:0 2px 14px; }
   .row{ display:flex; gap:8px; align-items:center; }
-  .search{ flex:1; padding:12px 14px; font-size:16px; border:1px solid var(--bd); border-radius:12px; box-sizing:border-box; }
-  .meta{ margin:10px 2px 0; font-size:13px; color:var(--sub); }
-  .box{ margin-top:12px; overflow:auto; border:1px solid var(--bd); border-radius:12px; }
+  .search{ flex:1; padding:12px 14px; font-size:16px; border:1px solid #e6e6e6; border-radius:12px; }
+  .meta{ margin:10px 2px 0; font-size:13px; color:#666; }
+  .log { margin:6px 2px; font-size:12px; color:#b00020; white-space:pre-wrap }
+  .box{ margin-top:12px; overflow:auto; border:1px solid #e6e6e6; border-radius:12px; }
   table{ width:100%; border-collapse:collapse; font-size:15px; }
-  thead th{ text-align:left; padding:10px; border-bottom:1px solid var(--bd); background:#fafafa; position:sticky; top:0; }
+  thead th{ text-align:left; padding:10px; border-bottom:1px solid #e6e6e6; background:#fafafa; position:sticky; top:0; }
   tbody td{ padding:10px; border-bottom:1px solid #f1f1f1; white-space:nowrap; }
   mark{ background:#ffec99; padding:0 2px; border-radius:3px; }
   .badge{ display:inline-block; padding:2px 8px; border:1px solid #d9d9d9; border-radius:999px; font-size:12px; color:#444; background:#fff; }
@@ -28,7 +28,7 @@
 <body>
 <div class="wrap">
   <div class="title">도서 검색</div>
-  <p class="desc">책 제목을 입력하세요. 예) <b>원피스</b> / 결과에는 <b>구역·칸·단</b>이 함께 표시됩니다.</p>
+  <p class="desc">책 제목을 입력하세요. 예) <b>원피스</b> · 결과에 <b>구역·칸·단</b> 표시</p>
 
   <div class="row">
     <input id="q" class="search" placeholder="예: 원피스 / 킹덤 / 나루토">
@@ -36,25 +36,48 @@
   </div>
 
   <div id="meta" class="meta"></div>
+  <div id="log" class="log"></div>
   <div id="out" class="box" aria-live="polite"></div>
 </div>
 
 <script>
-const BOOKS_JSON_URL = "https://gouldu-cyber.github.io/manavabooks/mnvbooks.json";
-const FIELDS = ["구분","제목","구역","칸","단","권수","완결여부","결권"];
+const PRIMARY_URL = "https://gouldu-cyber.github.io/manavabooks/mnvbooks.json";
+const FALLBACK_URL = "https://raw.githubusercontent.com/gouldu-cyber/manavabooks/main/mnvbooks.json";
+
+// JSON의 실제 키를 이 표준 키로 매핑해 사용
+const MAP = {
+  "구분": ["구분","분류"],
+  "제목": ["제목","title"],
+  "구역": ["구역","구역A","shelf","area"],
+  "칸":   ["칸","col","slot"],
+  "단":   ["단","row","level"],
+  "권수": ["권수","권","vol","count"],
+  "완결여부": ["완결여부","완결"],
+  "결권": ["결권","마지막권","last"]
+};
+const COLS = ["구분","제목","구역","칸","단","권수","완결여부","결권"]; // 보여줄 순서
 
 const qEl = document.getElementById('q');
-const out = document.getElementById('out');
+const out  = document.getElementById('out');
 const meta = document.getElementById('meta');
+const log  = document.getElementById('log');
 const quickEl = document.getElementById('quick');
 
-let DATA = [], IDX = [], QUICK = true;
+let DATA=[], IDX=[], QUICK=true;
 
-function norm(s){
-  if(s==null) return "";
-  return String(s).normalize('NFKD').toLowerCase().replace(/\s+/g,'').replace(/[\u0300-\u036f]/g,'');
-}
+function norm(s){ if(s==null) return ""; return String(s).normalize('NFKD').toLowerCase().replace(/\s+/g,'').replace(/[\u0300-\u036f]/g,''); }
 function esc(s){ return String(s??"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m])); }
+
+// 소스 객체의 키 목록에서 원하는 키(대체명 포함)를 찾아 값 반환
+function pick(obj, want){
+  const cands = MAP[want] || [want];
+  for(const k of Object.keys(obj)){
+    const kk = k.trim();
+    if(cands.includes(kk)) return obj[k];
+  }
+  return obj[want];
+}
+
 function hilite(text, raw){
   if(!raw) return esc(text);
   const s = String(text??"");
@@ -64,29 +87,39 @@ function hilite(text, raw){
   return esc(s.slice(0,i)) + "<mark>" + esc(s.slice(i, i+raw.length)) + "</mark>" + esc(s.slice(i+raw.length));
 }
 
+async function fetchJson(url){
+  const r = await fetch(url, {cache:"no-store", headers:{Accept:"application/json"}});
+  if(!r.ok) throw new Error(`HTTP ${r.status} at ${url}`);
+  return r.json();
+}
+
 async function load(){
   try{
-    const r = await fetch(BOOKS_JSON_URL, {cache: "no-store"});
-    if(!r.ok) throw new Error("JSON 로드 실패");
-    const d = await r.json();
+    log.textContent = "데이터 로딩 중…";
+    let d;
+    try { d = await fetchJson(PRIMARY_URL); }
+    catch(e1){ log.textContent = "기본 URL 실패, 대체 URL 시도 중…\n"+e1; d = await fetchJson(FALLBACK_URL); }
+
     DATA = Array.isArray(d) ? d : (d.records || []);
-    IDX = DATA.map((row,i)=>({ i, 제목:norm(row["제목"]), 구분:norm(row["구분"]||"") }));
+    if(!Array.isArray(DATA)) throw new Error("JSON 형식이 배열이 아닙니다.");
+
+    // 인덱스(제목/구분)
+    IDX = DATA.map((row,i)=>({ i, 제목:norm(pick(row,"제목")), 구분:norm(pick(row,"구분")||"") }));
+
+    log.textContent = `로드 성공: ${DATA.length}건`;
+    // ?q= 파라미터로 바로 검색
     const p = new URLSearchParams(location.search);
     if(p.get('q')){ qEl.value = p.get('q'); doSearch(); }
   }catch(e){
-    out.innerHTML = `<div style="padding:12px;color:#b00020;">데이터를 불러오지 못했습니다. JSON 경로를 확인해주세요.</div>`;
+    log.textContent = "로딩 에러: "+e.message;
+    out.innerHTML = `<div style="padding:12px;color:#b00020;">데이터를 불러오지 못했습니다. JSON 경로 또는 형식을 확인해주세요.</div>`;
   }
 }
 load();
 
 let timer=null;
 qEl.addEventListener('input', ()=>{ clearTimeout(timer); timer=setTimeout(doSearch, 120); });
-quickEl.addEventListener('click', ()=>{
-  QUICK = !QUICK;
-  quickEl.textContent = QUICK ? "빠른찾기" : "유사찾기";
-  quickEl.title = QUICK ? "앞부분 일치 우선 정렬" : "부분/유사 일치 중심";
-  doSearch();
-});
+quickEl.addEventListener('click', ()=>{ QUICK=!QUICK; quickEl.textContent=QUICK?"빠른찾기":"유사찾기"; doSearch(); });
 
 function doSearch(){
   const raw = qEl.value.trim();
@@ -94,7 +127,6 @@ function doSearch(){
   const key = norm(raw);
 
   let hits = IDX.filter(x => x.제목.includes(key) || x.구분.includes(key));
-
   hits.sort((a,b)=>{
     if(QUICK){
       const ap = Number(a.제목.startsWith(key)), bp = Number(b.제목.startsWith(key));
@@ -104,4 +136,21 @@ function doSearch(){
     }
   });
 
-  meta.textContent = `검색어: "${raw}" · 결과 ${hits
+  meta.textContent = `검색어: "${raw}" · 결과 ${hits.length}건`;
+
+  if(hits.length===0){ out.innerHTML = `<div style="padding:12px;">검색 결과가 없습니다.</div>`; return; }
+
+  const rows = hits.slice(0,1000).map(h=>{
+    const row = DATA[h.i];
+    return `<tr>${COLS.map(c=>`<td style="padding:10px;border-bottom:1px solid #f1f1f1;white-space:nowrap;">${esc(pick(row,c)??"")}</td>`).join('')}</tr>`;
+  }).join('');
+
+  out.innerHTML = `
+  <table>
+    <thead><tr>${COLS.map(c=>`<th>${c}</th>`).join('')}</tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+</script>
+</body>
+</html>
