@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>도서 검색 | 마나바</title>
+<style>
+  :root { --bd:#e6e6e6; --fg:#222; --sub:#666; --bg:#fff; }
+  body{ margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans KR',Arial; background:var(--bg); color:var(--fg); }
+  .wrap{ max-width:860px; margin:16px auto; padding:16px; }
+  .title{ font-size:20px; font-weight:700; margin:6px 2px 12px; }
+  .desc{ font-size:13px; color:var(--sub); margin:0 2px 14px; line-height:1.4; }
+  .row{ display:flex; gap:8px; align-items:center; }
+  .search{ flex:1; padding:12px 14px; font-size:16px; border:1px solid var(--bd); border-radius:12px; box-sizing:border-box; }
+  .meta{ margin:10px 2px 0; font-size:13px; color:var(--sub); }
+  .box{ margin-top:12px; overflow:auto; border:1px solid var(--bd); border-radius:12px; }
+  table{ width:100%; border-collapse:collapse; font-size:15px; }
+  thead th{ text-align:left; padding:10px; border-bottom:1px solid var(--bd); background:#fafafa; position:sticky; top:0; }
+  tbody td{ padding:10px; border-bottom:1px solid #f1f1f1; white-space:nowrap; }
+  mark{ background:#ffec99; padding:0 2px; border-radius:3px; }
+  .badge{ display:inline-block; padding:2px 8px; border:1px solid #d9d9d9; border-radius:999px; font-size:12px; color:#444; background:#fff; }
+  @media (max-width:720px){
+    tbody td:nth-child(1), thead th:nth-child(1){ display:none; }
+    tbody td, thead th{ padding:8px; font-size:14px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title">도서 검색</div>
+  <p class="desc">책 제목을 입력하세요. 예) <b>원피스</b> / 결과에는 <b>구역·칸·단</b>이 함께 표시됩니다.</p>
+
+  <div class="row">
+    <input id="q" class="search" placeholder="예: 원피스 / 킹덤 / 나루토">
+    <span id="quick" class="badge" title="앞부분 일치 우선 정렬">빠른찾기</span>
+  </div>
+
+  <div id="meta" class="meta"></div>
+  <div id="out" class="box" aria-live="polite"></div>
+</div>
+
+<script>
+const BOOKS_JSON_URL = "https://gouldu-cyber.github.io/manavabooks/mnvbooks.json";
+const FIELDS = ["구분","제목","구역","칸","단","권수","완결여부","결권"];
+
+const qEl = document.getElementById('q');
+const out = document.getElementById('out');
+const meta = document.getElementById('meta');
+const quickEl = document.getElementById('quick');
+
+let DATA = [], IDX = [], QUICK = true;
+
+function norm(s){
+  if(s==null) return "";
+  return String(s).normalize('NFKD').toLowerCase().replace(/\s+/g,'').replace(/[\u0300-\u036f]/g,'');
+}
+function esc(s){ return String(s??"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m])); }
+function hilite(text, raw){
+  if(!raw) return esc(text);
+  const s = String(text??"");
+  const nText = norm(s), nKey = norm(raw);
+  const i = nText.indexOf(nKey);
+  if(i<0) return esc(s);
+  return esc(s.slice(0,i)) + "<mark>" + esc(s.slice(i, i+raw.length)) + "</mark>" + esc(s.slice(i+raw.length));
+}
+
+async function load(){
+  try{
+    const r = await fetch(BOOKS_JSON_URL, {cache: "no-store"});
+    if(!r.ok) throw new Error("JSON 로드 실패");
+    const d = await r.json();
+    DATA = Array.isArray(d) ? d : (d.records || []);
+    IDX = DATA.map((row,i)=>({ i, 제목:norm(row["제목"]), 구분:norm(row["구분"]||"") }));
+    const p = new URLSearchParams(location.search);
+    if(p.get('q')){ qEl.value = p.get('q'); doSearch(); }
+  }catch(e){
+    out.innerHTML = `<div style="padding:12px;color:#b00020;">데이터를 불러오지 못했습니다. JSON 경로를 확인해주세요.</div>`;
+  }
+}
+load();
+
+let timer=null;
+qEl.addEventListener('input', ()=>{ clearTimeout(timer); timer=setTimeout(doSearch, 120); });
+quickEl.addEventListener('click', ()=>{
+  QUICK = !QUICK;
+  quickEl.textContent = QUICK ? "빠른찾기" : "유사찾기";
+  quickEl.title = QUICK ? "앞부분 일치 우선 정렬" : "부분/유사 일치 중심";
+  doSearch();
+});
+
+function doSearch(){
+  const raw = qEl.value.trim();
+  if(!raw){ out.innerHTML=""; meta.textContent=""; return; }
+  const key = norm(raw);
+
+  let hits = IDX.filter(x => x.제목.includes(key) || x.구분.includes(key));
+
+  hits.sort((a,b)=>{
+    if(QUICK){
+      const ap = Number(a.제목.startsWith(key)), bp = Number(b.제목.startsWith(key));
+      return bp - ap || a.제목.indexOf(key) - b.제목.indexOf(key);
+    }else{
+      return a.제목.indexOf(key) - b.제목.indexOf(key);
+    }
+  });
+
+  meta.textContent = `검색어: "${raw}" · 결과 ${hits
