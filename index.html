@@ -12,23 +12,18 @@
     }
 
     :root {
-      --navy: #172a46;
+      --navy: #1d2d4f;
       --text: #222;
       --sub: #777;
       --border: #e8e8e8;
-      --bg-soft: #f7f7f7;
+      --soft: #f7f7f7;
     }
 
     body {
       margin: 0;
-      font-family:
-        Arial,
-        "Apple SD Gothic Neo",
-        "Noto Sans KR",
-        sans-serif;
+      font-family: Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
       color: var(--text);
       background: #fff;
-      line-height: 1.6;
     }
 
     a {
@@ -41,17 +36,17 @@
       margin: 0 auto;
     }
 
-    /* 상단 메뉴 */
+    /* 상단 */
     header {
       border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,.97);
+      background: #fff;
       position: sticky;
       top: 0;
       z-index: 100;
     }
 
     .header-inner {
-      height: 72px;
+      min-height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -79,74 +74,51 @@
       color: var(--navy);
     }
 
-
-    /* 본문 */
-    main {
-      padding: 52px 0 80px;
+    /* 공지 */
+    .notice {
+      display: none;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
     }
 
-    section {
-      margin-bottom: 70px;
+    .notice-inner {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 14px;
     }
 
-    .section-title {
-      margin: 0 0 22px;
-      font-size: 26px;
+    .notice-label {
+      color: var(--navy);
       font-weight: 800;
     }
 
-
-    /* 공지사항 */
-    .notice-box {
-      border-top: 2px solid var(--navy);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .notice-item {
-      min-height: 62px;
-      padding: 16px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .notice-item:last-child {
-      border-bottom: 0;
-    }
-
-    .notice-title {
-      font-size: 15px;
-      font-weight: 600;
-    }
-
     .notice-date {
+      margin-left: auto;
       color: var(--sub);
       font-size: 13px;
       white-space: nowrap;
     }
 
-
-    /* 신간소식 */
-    .newbook-head {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 22px;
-      gap: 20px;
+    /* 메인 */
+    main {
+      padding: 52px 0 80px;
     }
 
-    .newbook-head .section-title {
-      margin: 0;
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 27px;
+      font-weight: 800;
     }
 
-    .newbook-sub {
-      margin: 4px 0 0;
+    .section-sub {
+      margin: 0 0 24px;
       color: var(--sub);
       font-size: 14px;
     }
 
+    /* 신간 */
     .newbook-scroll {
       display: flex;
       gap: 16px;
@@ -158,11 +130,11 @@
 
     .newbook-card {
       flex: 0 0 calc((100% - 32px) / 3);
-      scroll-snap-align: start;
+      aspect-ratio: 1 / 1;
       border-radius: 10px;
       overflow: hidden;
-      background: var(--bg-soft);
-      aspect-ratio: 1 / 1;
+      background: var(--soft);
+      scroll-snap-align: start;
     }
 
     .newbook-card img {
@@ -172,7 +144,7 @@
       object-fit: cover;
     }
 
-    .newbook-placeholder {
+    .placeholder {
       width: 100%;
       height: 100%;
       display: flex;
@@ -182,14 +154,12 @@
       font-size: 14px;
     }
 
-
     footer {
       border-top: 1px solid var(--border);
       padding: 32px 0;
       color: var(--sub);
       font-size: 13px;
     }
-
 
     /* 모바일 */
     @media (max-width: 700px) {
@@ -203,8 +173,8 @@
       }
 
       .header-inner {
-        height: auto;
-        padding: 16px 0 12px;
+        min-height: auto;
+        padding: 15px 0 11px;
         display: block;
       }
 
@@ -217,29 +187,26 @@
       nav {
         gap: 20px;
         overflow-x: auto;
-        padding-bottom: 3px;
+        padding-bottom: 4px;
         font-size: 13px;
       }
 
-      main {
-        padding: 35px 0 60px;
+      .notice-inner {
+        min-height: auto;
+        padding: 12px 0;
+        align-items: flex-start;
       }
 
-      section {
-        margin-bottom: 55px;
+      .notice-date {
+        display: none;
+      }
+
+      main {
+        padding: 36px 0 60px;
       }
 
       .section-title {
         font-size: 23px;
-      }
-
-      .notice-item {
-        align-items: flex-start;
-        padding: 15px 8px;
-      }
-
-      .notice-date {
-        font-size: 12px;
       }
 
       .newbook-card {
@@ -248,7 +215,6 @@
     }
   </style>
 </head>
-
 
 <body>
 
@@ -262,7 +228,10 @@
     <nav>
       <a href="menu.html">이용요금/메뉴</a>
       <a href="search.html">도서검색</a>
-      <a href="request.html">도서신청</a>
+
+      <!-- 구글폼 주소가 생기면 아래 # 부분을 바꿀 예정 -->
+      <a href="#" target="_blank">도서신청</a>
+
       <a href="guide.html">이용안내</a>
     </nav>
 
@@ -270,87 +239,66 @@
 </header>
 
 
+<!--
+공지 필요할 때만 사용
+
+1. 아래 .notice의 style="display:none"을
+   style="display:block"으로 변경
+
+2. 문구와 날짜 수정
+-->
+
+<div class="notice" style="display:none;">
+  <div class="wrap notice-inner">
+
+    <span class="notice-label">공지</span>
+
+    <span>
+      추석 연휴 운영 안내입니다.
+    </span>
+
+    <span class="notice-date">
+      2026.09.01
+    </span>
+
+  </div>
+</div>
+
+
 <main>
   <div class="wrap">
 
+    <section>
 
-    <!-- 공지사항 -->
-    <section id="notice">
+      <h1 class="section-title">
+        신간소식
+      </h1>
 
-      <h2 class="section-title">공지사항</h2>
-
-      <div class="notice-box">
-
-        <div class="notice-item">
-          <div class="notice-title">
-            마나바 홈페이지가 새롭게 열렸습니다.
-          </div>
-
-          <div class="notice-date">
-            2026.09.01
-          </div>
-        </div>
-
-        <div class="notice-item">
-          <div class="notice-title">
-            공지사항 내용을 입력해주세요.
-          </div>
-
-          <div class="notice-date">
-            2026.09.01
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- 신간소식 -->
-    <section id="new">
-
-      <div class="newbook-head">
-
-        <div>
-          <h2 class="section-title">신간소식</h2>
-          <p class="newbook-sub">
-            마나바에 새로 들어온 책입니다.
-          </p>
-        </div>
-
-      </div>
+      <p class="section-sub">
+        마나바에 새로 들어온 책입니다.
+      </p>
 
 
       <div class="newbook-scroll">
 
         <div class="newbook-card">
-          <div class="newbook-placeholder">
-            신간 이미지 1
-          </div>
+          <div class="placeholder">신간 이미지 1</div>
         </div>
 
         <div class="newbook-card">
-          <div class="newbook-placeholder">
-            신간 이미지 2
-          </div>
+          <div class="placeholder">신간 이미지 2</div>
         </div>
 
         <div class="newbook-card">
-          <div class="newbook-placeholder">
-            신간 이미지 3
-          </div>
+          <div class="placeholder">신간 이미지 3</div>
         </div>
 
         <div class="newbook-card">
-          <div class="newbook-placeholder">
-            신간 이미지 4
-          </div>
+          <div class="placeholder">신간 이미지 4</div>
         </div>
 
         <div class="newbook-card">
-          <div class="newbook-placeholder">
-            신간 이미지 5
-          </div>
+          <div class="placeholder">신간 이미지 5</div>
         </div>
 
       </div>
