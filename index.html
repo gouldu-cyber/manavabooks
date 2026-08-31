@@ -24,6 +24,7 @@
       font-family: Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
       color: var(--text);
       background: #fff;
+      line-height: 1.6;
     }
 
     a {
@@ -113,45 +114,68 @@
     }
 
     .section-sub {
-      margin: 0 0 24px;
+      margin: 0 0 28px;
       color: var(--sub);
       font-size: 14px;
     }
 
     /* 신간 */
-    .newbook-scroll {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: thin;
-      padding-bottom: 12px;
+    .newbook-box {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 36px;
+      align-items: center;
     }
 
-    .newbook-card {
-      flex: 0 0 calc((100% - 32px) / 3);
-      aspect-ratio: 1 / 1;
-      border-radius: 10px;
+    .newbook-image {
       overflow: hidden;
+      border-radius: 12px;
       background: var(--soft);
-      scroll-snap-align: start;
     }
 
-    .newbook-card img {
+    .newbook-image img {
       display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
     }
 
-    .placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
+    .newbook-info {
+      padding: 8px 0;
+    }
+
+    .newbook-date {
+      margin-bottom: 8px;
+      color: var(--sub);
+      font-size: 13px;
+    }
+
+    .newbook-title {
+      margin: 0 0 14px;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .newbook-text {
+      margin: 0;
+      color: #444;
+      font-size: 15px;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
+    .instagram-link {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      color: #aaa;
+      margin-top: 24px;
+      padding-bottom: 3px;
+      border-bottom: 1px solid var(--navy);
+      color: var(--navy);
       font-size: 14px;
+      font-weight: 700;
+    }
+
+    .instagram-link:hover {
+      opacity: .7;
     }
 
     footer {
@@ -209,8 +233,17 @@
         font-size: 23px;
       }
 
-      .newbook-card {
-        flex: 0 0 100%;
+      .newbook-box {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+
+      .newbook-title {
+        font-size: 21px;
+      }
+
+      .newbook-text {
+        font-size: 14px;
       }
     }
   </style>
@@ -229,7 +262,7 @@
       <a href="menu.html">이용요금/메뉴</a>
       <a href="search.html">도서검색</a>
 
-      <!-- 구글폼 주소가 생기면 아래 # 부분을 바꿀 예정 -->
+      <!-- 구글폼 주소가 생기면 # 부분을 바꾸면 됨 -->
       <a href="#" target="_blank">도서신청</a>
 
       <a href="guide.html">이용안내</a>
@@ -240,12 +273,10 @@
 
 
 <!--
-공지 필요할 때만 사용
+공지가 필요할 때만 사용
 
-1. 아래 .notice의 style="display:none"을
-   style="display:block"으로 변경
-
-2. 문구와 날짜 수정
+아래 style="display:none;" 을
+style="display:block;" 으로 바꾸면 공지가 나타남
 -->
 
 <div class="notice" style="display:none;">
@@ -270,35 +301,50 @@
 
     <section>
 
-      <h1 class="section-title">
-        신간소식
-      </h1>
+      <h1 class="section-title">신간소식</h1>
 
       <p class="section-sub">
-        마나바에 새로 들어온 책입니다.
+        마나바에 새로 들어온 책을 소개합니다.
       </p>
 
 
-      <div class="newbook-scroll">
+      <div class="newbook-box">
 
-        <div class="newbook-card">
-          <div class="placeholder">신간 이미지 1</div>
+        <!-- 최근 신간 이미지 -->
+        <div class="newbook-image">
+          <img src="new01.jpg" alt="마나바 신간소식">
         </div>
 
-        <div class="newbook-card">
-          <div class="placeholder">신간 이미지 2</div>
-        </div>
 
-        <div class="newbook-card">
-          <div class="placeholder">신간 이미지 3</div>
-        </div>
+        <!-- 최근 신간 내용 -->
+        <div class="newbook-info">
 
-        <div class="newbook-card">
-          <div class="placeholder">신간 이미지 4</div>
-        </div>
+          <div class="newbook-date">
+            2026.08.31
+          </div>
 
-        <div class="newbook-card">
-          <div class="placeholder">신간 이미지 5</div>
+          <h2 class="newbook-title">
+            8월 마지막 신간 입고
+          </h2>
+
+          <p class="newbook-text">
+신작 및 인기작이 새롭게 입고되었습니다.
+
+자세한 신간 목록과 소식은
+마나바 인스타그램에서 확인해주세요.
+          </p>
+
+
+          <!-- 인스타그램 주소 입력 -->
+          <a
+            class="instagram-link"
+            href="https://www.instagram.com/"
+            target="_blank"
+            rel="noopener"
+          >
+            Instagram에서 더 보기 →
+          </a>
+
         </div>
 
       </div>
