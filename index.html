@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ko">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +8,7 @@
   <title>마나바 | 여수 만화카페</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -33,11 +35,15 @@
     }
 
     .wrap {
-      width: min(1100px, calc(100% - 40px));
+      width: min(1060px, calc(100% - 40px));
       margin: 0 auto;
     }
 
-    /* 상단 */
+
+    /* =========================
+       상단 메뉴
+    ========================= */
+
     header {
       border-bottom: 1px solid var(--border);
       background: #fff;
@@ -47,7 +53,7 @@
     }
 
     .header-inner {
-      min-height: 72px;
+      min-height: 62px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -75,7 +81,12 @@
       color: var(--navy);
     }
 
-    /* 공지 */
+
+    /* =========================
+       공지사항
+       평소에는 숨김
+    ========================= */
+
     .notice {
       display: none;
       border-bottom: 1px solid var(--border);
@@ -102,34 +113,36 @@
       white-space: nowrap;
     }
 
-    /* 메인 */
+
+    /* =========================
+       메인
+    ========================= */
+
     main {
       padding: 52px 0 80px;
     }
 
     .section-title {
-      margin: 0 0 8px;
+      margin: 0 0 42px;
       font-size: 27px;
       font-weight: 800;
     }
 
-    .section-sub {
-      margin: 0 0 28px;
-      color: var(--sub);
-      font-size: 14px;
-    }
 
-    /* 신간 */
+    /* =========================
+       신간
+    ========================= */
+
     .newbook-box {
       display: grid;
-      grid-template-columns: 1.05fr 1fr;
+      grid-template-columns: 1.1fr 1fr;
       gap: 36px;
       align-items: center;
     }
 
     .newbook-image {
       overflow: hidden;
-      border-radius: 12px;
+      border-radius: 10px;
       background: var(--soft);
     }
 
@@ -140,33 +153,21 @@
     }
 
     .newbook-info {
-      padding: 8px 0;
-    }
-
-    .newbook-date {
-      margin-bottom: 8px;
-      color: var(--sub);
-      font-size: 13px;
-    }
-
-    .newbook-title {
-      margin: 0 0 14px;
-      font-size: 24px;
-      font-weight: 800;
+      padding: 10px 0;
     }
 
     .newbook-text {
       margin: 0;
-      color: #444;
+      color: #333;
       font-size: 15px;
-      line-height: 1.8;
+      line-height: 1.9;
       white-space: pre-line;
     }
 
     .instagram-link {
       display: inline-flex;
       align-items: center;
-      margin-top: 24px;
+      margin-top: 26px;
       padding-bottom: 3px;
       border-bottom: 1px solid var(--navy);
       color: var(--navy);
@@ -178,6 +179,11 @@
       opacity: .7;
     }
 
+
+    /* =========================
+       하단
+    ========================= */
+
     footer {
       border-top: 1px solid var(--border);
       padding: 32px 0;
@@ -185,11 +191,15 @@
       font-size: 13px;
     }
 
-    /* 모바일 */
+
+    /* =========================
+       모바일
+    ========================= */
+
     @media (max-width: 700px) {
 
       .wrap {
-        width: min(100% - 28px, 1100px);
+        width: min(100% - 28px, 1060px);
       }
 
       header {
@@ -230,6 +240,7 @@
       }
 
       .section-title {
+        margin-bottom: 26px;
         font-size: 23px;
       }
 
@@ -238,20 +249,30 @@
         gap: 22px;
       }
 
-      .newbook-title {
-        font-size: 21px;
-      }
-
       .newbook-text {
         font-size: 14px;
+        line-height: 1.9;
       }
+
+      .instagram-link {
+        margin-top: 20px;
+      }
+
     }
+
   </style>
 </head>
 
+
 <body>
 
+
+<!-- =========================
+     상단
+========================= -->
+
 <header>
+
   <div class="wrap header-inner">
 
     <a class="logo" href="index.html">
@@ -259,30 +280,51 @@
     </a>
 
     <nav>
-      <a href="menu.html">이용요금/메뉴</a>
-      <a href="search.html">도서검색</a>
 
-      <!-- 구글폼 주소가 생기면 # 부분을 바꾸면 됨 -->
-      <a href="#" target="_blank">도서신청</a>
+      <a href="menu.html">
+        이용요금/메뉴
+      </a>
 
-      <a href="guide.html">이용안내</a>
+      <a href="search.html">
+        도서검색
+      </a>
+
+      <!-- 나중에 #을 구글폼 주소로 변경 -->
+      <a href="#" target="_blank">
+        도서신청
+      </a>
+
+      <a href="guide.html">
+        이용안내
+      </a>
+
     </nav>
 
   </div>
+
 </header>
 
 
-<!--
-공지가 필요할 때만 사용
 
-아래 style="display:none;" 을
-style="display:block;" 으로 바꾸면 공지가 나타남
--->
+<!-- =========================
+     공지
+
+     평소에는 보이지 않습니다.
+
+     공지를 띄울 때
+     style="display:none;"
+     ↓
+     style="display:block;"
+     으로 변경하세요.
+========================= -->
 
 <div class="notice" style="display:none;">
+
   <div class="wrap notice-inner">
 
-    <span class="notice-label">공지</span>
+    <span class="notice-label">
+      공지
+    </span>
 
     <span>
       추석 연휴 운영 안내입니다.
@@ -293,69 +335,104 @@ style="display:block;" 으로 바꾸면 공지가 나타남
     </span>
 
   </div>
+
 </div>
 
 
+
+<!-- =========================
+     메인
+========================= -->
+
 <main>
+
   <div class="wrap">
 
     <section>
 
-      <h1 class="section-title">신간소식</h1>
-
-      <p class="section-sub">
-        마나바에 새로 들어온 책을 소개합니다.
-      </p>
+      <h1 class="section-title">
+        새로 들어왔어요
+      </h1>
 
 
       <div class="newbook-box">
 
-        <!-- 최근 신간 이미지 -->
-<div class="newbook-image">
-  <img src="new01.jpg" alt="마나바 신간소식">
-</div>
+
+        <!-- =====================
+             신간 이미지
+
+             새 신간이 들어오면
+             new01.jpg 이미지만 교체
+        ====================== -->
+
+        <div class="newbook-image">
+
+          <img
+            src="new01.jpg"
+            alt="마나바 신간"
+          >
+
+        </div>
 
 
-<!-- 신간 도서목록 -->
-<div class="newbook-info">
 
-  <h2 class="newbook-title">
-    신간 도서목록
-  </h2>
+        <!-- =====================
+             신간 도서 목록
 
-  <p class="newbook-text">
+             아래 책 이름만
+             수정하면 됩니다.
+        ====================== -->
+
+        <div class="newbook-info">
+
+          <p class="newbook-text">
 원피스 113
 킹덤 78
 블루 록 34
 주술회전 30
 장송의 프리렌 15
-  </p>
+          </p>
 
 
-  <a
-    class="instagram-link"
-    href="https://www.instagram.com/manava6f"
-    target="_blank"
-    rel="noopener"
-  >
-    Instagram에서 더 보기 →
-  </a>
+          <!--
+            마나바 인스타그램 주소가 정해지면
+            아래 주소만 교체
+          -->
 
-</div>
+          <a
+            class="instagram-link"
+            href="https://www.instagram.com/manava6f"
+            target="_blank"
+            rel="noopener"
+          >
+            Instagram에서 더 보기 →
+          </a>
+
+        </div>
+
 
       </div>
 
     </section>
 
   </div>
+
 </main>
 
 
+
+<!-- =========================
+     하단
+========================= -->
+
 <footer>
+
   <div class="wrap">
     MANAVA
   </div>
+
 </footer>
+
 
 </body>
 </html>
