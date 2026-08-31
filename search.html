@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ko">
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,232 +8,256 @@
 <title>도서 검색 | 마나바</title>
 
 <style>
-  :root {
-    --navy:#1d2d4f;
-    --bd:#e6e6e6;
-    --fg:#222;
-    --sub:#666;
-    --bg:#fff;
-  }
 
-  *{
-    box-sizing:border-box;
-  }
+*{
+  box-sizing:border-box;
+}
 
-  body{
-    margin:0;
-    font-family:Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-    background:#fff;
-    color:#222;
-  }
+:root{
+  --navy:#1d2d4f;
+  --text:#222;
+  --sub:#666;
+  --border:#e6e6e6;
+}
 
-  a{
-    color:inherit;
-    text-decoration:none;
-  }
+body{
+  margin:0;
+  font-family:Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  background:#fff;
+  color:var(--text);
+}
 
-  /* =========================
-     공통 상단 메뉴
-  ========================= */
+a{
+  color:inherit;
+  text-decoration:none;
+}
 
-  header{
-    border-bottom:1px solid var(--bd);
-    background:#fff;
-    position:sticky;
-    top:0;
-    z-index:100;
-  }
+
+/* =========================
+   공통 상단 메뉴
+========================= */
+
+header{
+  border-bottom:1px solid var(--border);
+  background:#fff;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.header-wrap{
+  width:min(1060px, calc(100% - 40px));
+  margin:0 auto;
+}
+
+.header-inner{
+  min-height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px;
+}
+
+.logo{
+  color:var(--navy);
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:.06em;
+  white-space:nowrap;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  font-size:14px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+nav a{
+  font-size:14px;
+  font-weight:700;
+}
+
+nav a:hover{
+  color:var(--navy);
+}
+
+
+/* =========================
+   도서검색 본문
+========================= */
+
+.search-wrap{
+  width:min(1200px, calc(100% - 24px));
+  margin:0 auto;
+  padding:28px 0 60px;
+}
+
+.guide{
+  margin:0 0 18px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--border);
+}
+
+.guide img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+.title{
+  font-size:20px;
+  font-weight:700;
+  margin:6px 2px 12px;
+}
+
+.desc{
+  font-size:13px;
+  color:var(--sub);
+  margin:0 2px 14px;
+}
+
+.row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.search{
+  flex:1;
+  min-width:0;
+  padding:16px 18px;
+  font-family:Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-size:18px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  outline:none;
+}
+
+.search:focus{
+  border-color:#9da7b8;
+}
+
+.meta{
+  margin:10px 2px 0;
+  font-size:13px;
+  color:var(--sub);
+}
+
+.log{
+  margin:6px 2px;
+  font-size:12px;
+  color:#b00020;
+  white-space:pre-wrap;
+}
+
+.box{
+  margin-top:12px;
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:15px;
+}
+
+thead th{
+  text-align:left;
+  padding:10px;
+  border-bottom:1px solid var(--border);
+  background:#fafafa;
+  position:sticky;
+  top:0;
+  font-weight:700;
+}
+
+tbody td{
+  padding:10px;
+  border-bottom:1px solid #f1f1f1;
+  white-space:nowrap;
+}
+
+mark{
+  background:#ffec99;
+  padding:0 2px;
+  border-radius:3px;
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 9px;
+  border:1px solid #d9d9d9;
+  border-radius:999px;
+  font-size:12px;
+  color:#444;
+  background:#fff;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+
+/* =========================
+   모바일
+========================= */
+
+@media (max-width:700px){
 
   .header-wrap{
-    width:min(1060px, calc(100% - 40px));
-    margin:0 auto;
+    width:min(100% - 28px, 1060px);
+  }
+
+  header{
+    position:static;
   }
 
   .header-inner{
-    min-height:62px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:30px;
-  }
-
-  .logo{
-    color:var(--navy);
-    font-size:24px;
-    font-weight:800;
-    letter-spacing:.06em;
-    white-space:nowrap;
-  }
-
-  nav{
-    display:flex;
-    align-items:center;
-    gap:28px;
-    font-size:14px;
-    font-weight:700;
-    white-space:nowrap;
-  }
-
-  nav a:hover{
-    color:var(--navy);
-  }
-
-
-  /* =========================
-     기존 도서검색
-  ========================= */
-
-  .wrap{
-    max-width:1200px;
-    margin:0 auto;
-    padding:28px 12px 60px;
-  }
-
-  .title{
-    font-size:20px;
-    font-weight:700;
-    margin:6px 2px 12px;
-  }
-
-  .desc{
-    font-size:13px;
-    color:#666;
-    margin:0 2px 14px;
-  }
-
-  .row{
-    display:flex;
-    gap:8px;
-    align-items:center;
-  }
-
-  .search{
-    flex:1;
-    padding:16px 18px;
-    font-size:18px;
-    border:1px solid #e6e6e6;
-    border-radius:12px;
-  }
-
-  .meta{
-    margin:10px 2px 0;
-    font-size:13px;
-    color:#666;
-  }
-
-  .log{
-    margin:6px 2px;
-    font-size:12px;
-    color:#b00020;
-    white-space:pre-wrap;
-  }
-
-  .box{
-    margin-top:12px;
-    overflow:auto;
-    border:1px solid #e6e6e6;
-    border-radius:12px;
-  }
-
-  table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:15px;
-  }
-
-  thead th{
-    text-align:left;
-    padding:10px;
-    border-bottom:1px solid #e6e6e6;
-    background:#fafafa;
-    position:sticky;
-    top:0;
-  }
-
-  tbody td{
-    padding:10px;
-    border-bottom:1px solid #f1f1f1;
-    white-space:nowrap;
-  }
-
-  mark{
-    background:#ffec99;
-    padding:0 2px;
-    border-radius:3px;
-  }
-
-  .badge{
-    display:inline-block;
-    padding:2px 8px;
-    border:1px solid #d9d9d9;
-    border-radius:999px;
-    font-size:12px;
-    color:#444;
-    background:#fff;
-  }
-
-  .guide{
-    margin:0 0 18px;
-    border-radius:12px;
-    overflow:hidden;
-    border:1px solid #e6e6e6;
-  }
-
-  .guide img{
-    width:100%;
-    height:auto;
+    min-height:auto;
+    padding:15px 0 11px;
     display:block;
   }
 
-
-  /* =========================
-     모바일
-  ========================= */
-
-  @media (max-width:720px){
-
-    .header-wrap{
-      width:min(100% - 28px, 1060px);
-    }
-
-    header{
-      position:static;
-    }
-
-    .header-inner{
-      min-height:auto;
-      padding:15px 0 11px;
-      display:block;
-    }
-
-    .logo{
-      display:block;
-      margin-bottom:12px;
-      font-size:22px;
-    }
-
-    nav{
-      gap:20px;
-      overflow-x:auto;
-      padding-bottom:4px;
-      font-size:13px;
-    }
-
-    .wrap{
-      padding:20px 12px 50px;
-    }
-
-    tbody td:nth-child(1),
-    thead th:nth-child(1){
-      display:none;
-    }
-
-    tbody td,
-    thead th{
-      padding:8px;
-      font-size:14px;
-    }
+  .logo{
+    display:block;
+    margin-bottom:12px;
+    font-size:22px;
+    font-weight:800;
   }
+
+  nav{
+    gap:20px;
+    overflow-x:auto;
+    padding-bottom:4px;
+    font-size:13px;
+  }
+
+  nav a{
+    font-size:13px;
+    font-weight:700;
+  }
+
+  .search-wrap{
+    width:calc(100% - 24px);
+    padding:20px 0 50px;
+  }
+
+  tbody td:nth-child(1),
+  thead th:nth-child(1){
+    display:none;
+  }
+
+  tbody td,
+  thead th{
+    padding:8px;
+    font-size:14px;
+  }
+
+}
 
 </style>
 </head>
@@ -240,10 +265,6 @@
 
 <body>
 
-
-<!-- =========================
-     공통 상단 메뉴
-========================= -->
 
 <header>
 
@@ -265,7 +286,6 @@
           도서검색
         </a>
 
-        <!-- 실제 구글폼 주소로 교체 -->
         <a
           href="https://docs.google.com/forms/"
           target="_blank"
@@ -288,17 +308,15 @@
 
 
 
-<!-- =========================
-     기존 도서검색
-========================= -->
-
-<div class="wrap">
+<div class="search-wrap">
 
   <div class="guide">
+
     <img
       src="mnvguide.jpeg"
       alt="마나바 도서 위치 안내"
     >
+
   </div>
 
 
@@ -333,8 +351,14 @@
 
 
   <div id="meta" class="meta"></div>
+
   <div id="log" class="log"></div>
-  <div id="out" class="box" aria-live="polite"></div>
+
+  <div
+    id="out"
+    class="box"
+    aria-live="polite"
+  ></div>
 
 </div>
 
@@ -352,52 +376,21 @@ const FALLBACK_URL =
 // JSON의 실제 키를 이 표준 키로 매핑해 사용
 const MAP = {
 
-  "구분": [
-    "구분",
-    "분류"
-  ],
+  "구분": ["구분","분류"],
 
-  "제목": [
-    "제목",
-    "title"
-  ],
+  "제목": ["제목","title"],
 
-  "구역": [
-    "구역",
-    "구역A",
-    "shelf",
-    "area"
-  ],
+  "구역": ["구역","구역A","shelf","area"],
 
-  "칸": [
-    "칸",
-    "col",
-    "slot"
-  ],
+  "칸": ["칸","col","slot"],
 
-  "단": [
-    "단",
-    "row",
-    "level"
-  ],
+  "단": ["단","row","level"],
 
-  "권수": [
-    "권수",
-    "권",
-    "vol",
-    "count"
-  ],
+  "권수": ["권수","권","vol","count"],
 
-  "완결여부": [
-    "완결여부",
-    "완결"
-  ],
+  "완결여부": ["완결여부","완결"],
 
-  "결권": [
-    "결권",
-    "마지막권",
-    "last"
-  ]
+  "결권": ["결권","마지막권","last"]
 
 };
 
@@ -430,15 +423,16 @@ const quickEl =
 document.getElementById('quick');
 
 
-let DATA=[];
-let IDX=[];
-let QUICK=true;
+let DATA = [];
+let IDX = [];
+let QUICK = true;
 
 
 
 function norm(s){
 
-  if(s==null) return "";
+  if(s == null)
+    return "";
 
   return String(s)
     .normalize('NFKD')
@@ -452,10 +446,10 @@ function norm(s){
 
 function esc(s){
 
-  return String(s??"")
+  return String(s ?? "")
     .replace(
       /[&<>"']/g,
-      m=>({
+      m => ({
         "&":"&amp;",
         "<":"&lt;",
         ">":"&gt;",
@@ -496,7 +490,7 @@ function hilite(text, raw){
     return esc(text);
 
   const s =
-    String(text??"");
+    String(text ?? "");
 
   const nText =
     norm(s);
@@ -507,14 +501,14 @@ function hilite(text, raw){
   const i =
     nText.indexOf(nKey);
 
-  if(i<0)
+  if(i < 0)
     return esc(s);
 
   return esc(s.slice(0,i))
     + "<mark>"
-    + esc(s.slice(i, i+raw.length))
+    + esc(s.slice(i, i + raw.length))
     + "</mark>"
-    + esc(s.slice(i+raw.length));
+    + esc(s.slice(i + raw.length));
 
 }
 
@@ -608,7 +602,6 @@ async function load(){
       `로드 성공: ${DATA.length}건`;
 
 
-    // ?q= 파라미터로 바로 검색
     const p =
       new URLSearchParams(
         location.search
@@ -634,10 +627,7 @@ async function load(){
 
 
     out.innerHTML =
-      `<div style="
-        padding:12px;
-        color:#b00020;
-      ">
+      `<div style="padding:12px;color:#b00020;">
         데이터를 불러오지 못했습니다.
         JSON 경로 또는 형식을 확인해주세요.
       </div>`;
@@ -651,7 +641,7 @@ load();
 
 
 
-let timer=null;
+let timer = null;
 
 
 qEl.addEventListener(
@@ -698,8 +688,9 @@ function doSearch(){
 
   if(!raw){
 
-    out.innerHTML="";
-    meta.textContent="";
+    out.innerHTML = "";
+    meta.textContent = "";
+
     return;
 
   }
@@ -741,14 +732,10 @@ function doSearch(){
 
       }
 
-      else{
-
-        return
-          a.제목.indexOf(key)
-          -
-          b.제목.indexOf(key);
-
-      }
+      return
+        a.제목.indexOf(key)
+        -
+        b.제목.indexOf(key);
 
     }
   );
@@ -758,7 +745,7 @@ function doSearch(){
     `검색어: "${raw}" · 결과 ${hits.length}건`;
 
 
-  if(hits.length===0){
+  if(hits.length === 0){
 
     out.innerHTML =
       `<div style="padding:12px;">
@@ -784,11 +771,7 @@ function doSearch(){
             ${
               COLS.map(
                 c=>`
-                <td style="
-                  padding:10px;
-                  border-bottom:1px solid #f1f1f1;
-                  white-space:nowrap;
-                ">
+                <td>
                   ${
                     esc(
                       pick(row,c) ?? ""
@@ -811,24 +794,17 @@ function doSearch(){
   <table>
 
     <thead>
-
       <tr>
-
         ${
           COLS.map(
             c=>`<th>${c}</th>`
           ).join('')
         }
-
       </tr>
-
     </thead>
 
-
     <tbody>
-
       ${rows}
-
     </tbody>
 
   </table>
@@ -837,6 +813,7 @@ function doSearch(){
 }
 
 </script>
+
 
 </body>
 </html>
