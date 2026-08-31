@@ -11,10 +11,22 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --navy: #172a46;
+      --text: #222;
+      --sub: #777;
+      --border: #e8e8e8;
+      --bg-soft: #f7f7f7;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-      color: #222;
+      font-family:
+        Arial,
+        "Apple SD Gothic Neo",
+        "Noto Sans KR",
+        sans-serif;
+      color: var(--text);
       background: #fff;
       line-height: 1.6;
     }
@@ -29,274 +41,329 @@
       margin: 0 auto;
     }
 
+    /* 상단 메뉴 */
     header {
-      border-bottom: 1px solid #eee;
-      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.97);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
     }
 
     .header-inner {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    .logo {
-      font-size: 23px;
-      font-weight: 800;
-      letter-spacing: .08em;
-    }
-
-    nav {
-      display: flex;
-      gap: 22px;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .hero {
-      padding: 90px 0 80px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      margin: 0 0 14px;
-      font-size: clamp(36px, 7vw, 64px);
-      letter-spacing: .08em;
-    }
-
-    .hero p {
-      margin: 0 0 32px;
-      color: #666;
-      font-size: 17px;
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 150px;
-      min-height: 48px;
-      padding: 0 22px;
-      border-radius: 8px;
-      font-weight: 700;
-    }
-
-    .button-dark {
-      background: #222;
-      color: #fff;
-    }
-
-    .button-light {
-      border: 1px solid #ddd;
-      background: #fff;
-    }
-
-    section {
-      padding: 70px 0;
-    }
-
-    .section-title {
-      margin-bottom: 30px;
-    }
-
-    .section-title h2 {
-      margin: 0 0 6px;
-      font-size: 28px;
-    }
-
-    .section-title p {
-      margin: 0;
-      color: #777;
-    }
-
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .news-card {
-      background: #f5f5f5;
-      border-radius: 12px;
-      aspect-ratio: 1 / 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #999;
-      overflow: hidden;
-    }
-
-    .search-box {
-      padding: 38px;
-      background: #f7f7f7;
-      border-radius: 16px;
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 30px;
     }
 
-    .search-box h2 {
-      margin: 0 0 8px;
-      font-size: 28px;
+    .logo {
+      color: var(--navy);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      white-space: nowrap;
     }
 
-    .search-box p {
-      margin: 0;
-      color: #666;
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
     }
+
+    nav a:hover {
+      color: var(--navy);
+    }
+
+
+    /* 본문 */
+    main {
+      padding: 52px 0 80px;
+    }
+
+    section {
+      margin-bottom: 70px;
+    }
+
+    .section-title {
+      margin: 0 0 22px;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+
+    /* 공지사항 */
+    .notice-box {
+      border-top: 2px solid var(--navy);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .notice-item {
+      min-height: 62px;
+      padding: 16px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .notice-item:last-child {
+      border-bottom: 0;
+    }
+
+    .notice-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .notice-date {
+      color: var(--sub);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+
+    /* 신간소식 */
+    .newbook-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      gap: 20px;
+    }
+
+    .newbook-head .section-title {
+      margin: 0;
+    }
+
+    .newbook-sub {
+      margin: 4px 0 0;
+      color: var(--sub);
+      font-size: 14px;
+    }
+
+    .newbook-scroll {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      padding-bottom: 12px;
+    }
+
+    .newbook-card {
+      flex: 0 0 calc((100% - 32px) / 3);
+      scroll-snap-align: start;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-soft);
+      aspect-ratio: 1 / 1;
+    }
+
+    .newbook-card img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .newbook-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 14px;
+    }
+
 
     footer {
-      margin-top: 60px;
-      border-top: 1px solid #eee;
-      padding: 40px 0;
-      color: #777;
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      color: var(--sub);
       font-size: 13px;
     }
 
+
+    /* 모바일 */
     @media (max-width: 700px) {
+
       .wrap {
         width: min(100% - 28px, 1100px);
       }
 
+      header {
+        position: static;
+      }
+
       .header-inner {
-        min-height: 62px;
+        height: auto;
+        padding: 16px 0 12px;
+        display: block;
+      }
+
+      .logo {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 22px;
       }
 
       nav {
-        gap: 13px;
+        gap: 20px;
+        overflow-x: auto;
+        padding-bottom: 3px;
         font-size: 13px;
       }
 
-      .hero {
-        padding: 65px 0 55px;
+      main {
+        padding: 35px 0 60px;
       }
 
       section {
-        padding: 50px 0;
+        margin-bottom: 55px;
       }
 
-      .news-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+      .section-title {
+        font-size: 23px;
       }
 
-      .search-box {
-        padding: 28px 22px;
-        flex-direction: column;
+      .notice-item {
         align-items: flex-start;
+        padding: 15px 8px;
+      }
+
+      .notice-date {
+        font-size: 12px;
+      }
+
+      .newbook-card {
+        flex: 0 0 100%;
       }
     }
   </style>
 </head>
 
+
 <body>
 
 <header>
   <div class="wrap header-inner">
-    <a class="logo" href="index.html">MANABA</a>
+
+    <a class="logo" href="index.html">
+      MANAVA
+    </a>
 
     <nav>
-      <a href="#new">신간소식</a>
+      <a href="menu.html">이용요금/메뉴</a>
       <a href="search.html">도서검색</a>
-      <a href="#guide">이용안내</a>
+      <a href="request.html">도서신청</a>
+      <a href="guide.html">이용안내</a>
     </nav>
+
   </div>
 </header>
 
 
 <main>
-
-  <section class="hero">
-    <div class="wrap">
-      <h1>MANABA</h1>
-      <p>조용히 책을 읽고 쉬어가는 만화카페</p>
-
-      <div class="buttons">
-        <a class="button button-dark" href="search.html">
-          도서 검색
-        </a>
-
-        <a class="button button-light" href="#new">
-          신간 소식
-        </a>
-      </div>
-    </div>
-  </section>
+  <div class="wrap">
 
 
-  <section id="new">
-    <div class="wrap">
+    <!-- 공지사항 -->
+    <section id="notice">
 
-      <div class="section-title">
-        <h2>신간소식</h2>
-        <p>마나바에 새로 들어온 책을 확인하세요.</p>
-      </div>
+      <h2 class="section-title">공지사항</h2>
 
-      <div class="news-grid">
-        <div class="news-card">신간 이미지 1</div>
-        <div class="news-card">신간 이미지 2</div>
-        <div class="news-card">신간 이미지 3</div>
-        <div class="news-card">신간 이미지 4</div>
-        <div class="news-card">신간 이미지 5</div>
-        <div class="news-card">신간 이미지 6</div>
-      </div>
+      <div class="notice-box">
 
-    </div>
-  </section>
+        <div class="notice-item">
+          <div class="notice-title">
+            마나바 홈페이지가 새롭게 열렸습니다.
+          </div>
 
-
-  <section>
-    <div class="wrap">
-
-      <div class="search-box">
-        <div>
-          <h2>찾는 책이 있나요?</h2>
-          <p>마나바 보유 도서를 제목이나 작가명으로 검색할 수 있습니다.</p>
+          <div class="notice-date">
+            2026.09.01
+          </div>
         </div>
 
-        <a class="button button-dark" href="search.html">
-          도서 검색하기
-        </a>
+        <div class="notice-item">
+          <div class="notice-title">
+            공지사항 내용을 입력해주세요.
+          </div>
+
+          <div class="notice-date">
+            2026.09.01
+          </div>
+        </div>
+
       </div>
 
-    </div>
-  </section>
+    </section>
 
 
-  <section id="guide">
-    <div class="wrap">
+    <!-- 신간소식 -->
+    <section id="new">
 
-      <div class="section-title">
-        <h2>이용안내</h2>
-        <p>마나바 이용에 필요한 정보를 안내합니다.</p>
+      <div class="newbook-head">
+
+        <div>
+          <h2 class="section-title">신간소식</h2>
+          <p class="newbook-sub">
+            마나바에 새로 들어온 책입니다.
+          </p>
+        </div>
+
       </div>
 
-      <p>
-        운영시간과 이용요금 등은 다음 단계에서 넣겠습니다.
-      </p>
 
-    </div>
-  </section>
+      <div class="newbook-scroll">
 
+        <div class="newbook-card">
+          <div class="newbook-placeholder">
+            신간 이미지 1
+          </div>
+        </div>
+
+        <div class="newbook-card">
+          <div class="newbook-placeholder">
+            신간 이미지 2
+          </div>
+        </div>
+
+        <div class="newbook-card">
+          <div class="newbook-placeholder">
+            신간 이미지 3
+          </div>
+        </div>
+
+        <div class="newbook-card">
+          <div class="newbook-placeholder">
+            신간 이미지 4
+          </div>
+        </div>
+
+        <div class="newbook-card">
+          <div class="newbook-placeholder">
+            신간 이미지 5
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
 </main>
 
 
 <footer>
   <div class="wrap">
-    MANABA
+    MANAVA
   </div>
 </footer>
 
